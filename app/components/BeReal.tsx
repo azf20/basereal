@@ -1,7 +1,12 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
-import { useAccount, useWalletClient, usePublicClient } from "wagmi";
+import {
+  useAccount,
+  useWalletClient,
+  usePublicClient,
+  useSwitchChain,
+} from "wagmi";
 import { createCoin } from "@zoralabs/coins-sdk";
 import { base } from "viem/chains";
 
@@ -23,12 +28,15 @@ export default function BaseReal() {
   const [title, setTitle] = useState("");
   const [textColor, setTextColor] = useState("#FFFFFF");
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const { address, status } = useAccount();
+  const { address, status, chainId } = useAccount();
   const { data: walletClient } = useWalletClient();
-  const publicClient = usePublicClient({ chainId: base.id });
+  const publicClient = usePublicClient();
   const [isUploading, setIsUploading] = useState(false);
   const [isCreatingCoin, setIsCreatingCoin] = useState(false);
   const [coinAddress, setCoinAddress] = useState<string | null>(null);
+  const { switchChain } = useSwitchChain();
+
+  const isBase = chainId === base.id; // Base chain ID
 
   const startCamera = useCallback(async () => {
     try {
@@ -186,7 +194,7 @@ export default function BaseReal() {
     }
   }, [photo, title, createCompositeImage, address, walletClient, publicClient]);
 
-  if (status === "disconnected") {
+  if (!status || status === "disconnected") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
         <div className="text-center space-y-4">
@@ -201,8 +209,23 @@ export default function BaseReal() {
     );
   }
 
+  if (!isBase) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        <div className="relative w-full max-w-[480px] aspect-square bg-black rounded-lg overflow-hidden">
+          <button
+            onClick={() => switchChain({ chainId: 8453 })}
+            className="absolute inset-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 text-white font-pixel text-sm"
+          >
+            Switch to Base
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <div className="relative">
       {!photo ? (
         <div className="relative w-full max-w-[480px] aspect-square bg-black rounded-lg overflow-hidden">
           <video
