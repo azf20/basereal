@@ -2,7 +2,7 @@
 
 import { Post } from "../types/post";
 import LazyImage from "./LazyImage";
-import { Identity, Name } from "@coinbase/onchainkit/identity";
+import { Identity, Name, Address } from "@coinbase/onchainkit/identity";
 
 interface ZoraPostsProps {
   isLoading: boolean;
@@ -52,6 +52,7 @@ export default function ZoraPosts({ isLoading, posts }: ZoraPostsProps) {
                 className="!bg-inherit p-0 [&>div]:space-x-0"
               >
                 <Name className="text-inherit font-pixel text-sm" />
+                <Address className="text-inherit font-pixel text-sm" />
               </Identity>
             </div>
           </div>

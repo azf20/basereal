@@ -292,12 +292,10 @@ export default function BaseReal() {
               </button>
             ) : (
               <a
-                href={`https://zora.co/coin/base:${coinAddress}`}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`/post/${coinAddress}`}
                 className="rounded-full px-4 py-2 shadow-lg font-pixel bg-[#0052FF] text-white hover:bg-[#0052FF]/90"
               >
-                View on Zora
+                View Post
               </a>
             )}
           </div>

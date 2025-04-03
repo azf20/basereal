@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAccount, useDisconnect } from "wagmi";
 import { ConnectWallet, ConnectWalletText } from "@coinbase/onchainkit/wallet";
-import { Identity, Name, Badge } from "@coinbase/onchainkit/identity";
+import { Identity, Name, Badge, Address } from "@coinbase/onchainkit/identity";
 import { useAddFrame, useMiniKit } from "@coinbase/onchainkit/minikit";
 import { useCallback, useState } from "react";
 import Check from "../svg/Check";
@@ -77,9 +77,9 @@ export default function Nav() {
           <div className="flex items-center space-x-4">
             {status === "connected" && address ? (
               <div className="flex items-center relative">
-                <button
+                <div
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="flex items-center hover:opacity-80"
+                  className="flex items-center hover:opacity-80 cursor-pointer"
                 >
                   <Identity
                     address={address}
@@ -92,11 +92,12 @@ export default function Nav() {
                         className="!bg-inherit high-score-badge"
                       />
                     </Name>
+                    <Address />
                   </Identity>
                   <span className="ml-2 text-xs font-pixel text-gray-500">
                     •••
                   </span>
-                </button>
+                </div>
                 {menuOpen && (
                   <div className="absolute right-0 top-full mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
                     <div className="py-1">
