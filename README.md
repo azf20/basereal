@@ -43,7 +43,7 @@ Add your environment variables:
 # OnchainKit Configuration
 NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME=
 NEXT_PUBLIC_ONCHAINKIT_API_KEY=
-NEXT_PUBLIC_URL=                     # Your app's URL (e.g. https://basereal.vercel.app)
+NEXT_PUBLIC_URL=                     # Your app's URL (e.g. https://basereal.xyz)
 NEXT_PUBLIC_SPLASH_IMAGE_URL=        # $NEXT_PUBLIC_URL/basereal.png
 NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR= # FFFFFF
 NEXT_PUBLIC_IMAGE_URL=               # $NEXT_PUBLIC_URL/basereal.png

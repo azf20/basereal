@@ -192,7 +192,9 @@ export default function BaseReal() {
         <div className="text-center space-y-4">
           <h1 className="text-2xl font-pixel">Welcome to BaseReal</h1>
           <p className="text-gray-600 font-pixel">
-            Please connect your wallet in the top right corner
+            Real photos, real coins.
+            <br />
+            Connect wallet to get started.
           </p>
         </div>
       </div>
