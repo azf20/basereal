@@ -28,7 +28,6 @@ export default function BaseReal() {
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [frontStream, setFrontStream] = useState<MediaStream | null>(null);
   const [photo, setPhoto] = useState<string | null>(null);
-  const [dualPhoto, setDualPhoto] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [textColor, setTextColor] = useState("#FFFFFF");
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -95,7 +94,7 @@ export default function BaseReal() {
           usingFrontCamera =
             facingMode === "user" ||
             facingMode?.exact === "user" ||
-            (!mobileDevice && facingMode !== { exact: "environment" });
+            (!mobileDevice && facingMode?.exact !== "environment");
         } catch (err) {
           console.log(
             "Error accessing camera with specified facing mode:",
@@ -193,7 +192,6 @@ export default function BaseReal() {
 
   // Modified useEffect to start both cameras with better control flow
   useEffect(() => {
-    let mainCameraInitialized = false;
     let frontCameraInitialized = false;
     let mainCleanupDone = false;
     let frontCleanupDone = false;
@@ -201,7 +199,6 @@ export default function BaseReal() {
     const initCameras = async () => {
       try {
         await startCamera();
-        mainCameraInitialized = true;
 
         if (isMobile && !frontCameraInitialized) {
           // Wait a moment for main camera to stabilize
