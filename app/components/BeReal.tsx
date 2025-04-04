@@ -41,16 +41,32 @@ export default function BaseReal() {
   const startCamera = useCallback(async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
+        video: {
+          facingMode: "environment",
+          width: { ideal: 1920 },
+          height: { ideal: 1920 },
+        },
         audio: false,
       });
 
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
-        setStream(mediaStream);
       }
-    } catch (err) {
-      console.error("Error accessing camera:", err);
+      setStream(mediaStream);
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+      // Optionally show error to user
+      if (error instanceof Error) {
+        if (error.name === "NotAllowedError") {
+          alert(
+            "Camera access was denied. Please allow camera access to use this feature.",
+          );
+        } else if (error.name === "NotFoundError") {
+          alert("No camera found. Please ensure you have a camera connected.");
+        } else {
+          alert("Error accessing camera: " + error.message);
+        }
+      }
     }
   }, []);
 
