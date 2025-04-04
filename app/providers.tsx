@@ -12,9 +12,6 @@ export function Providers(props: { children: ReactNode }) {
       apiKey={apiKey}
       chain={base}
       config={{
-        wallet: {
-          display: "modal",
-        },
         appearance: {
           mode: "auto",
           theme: "snake",
