@@ -56,6 +56,7 @@ export default function BaseReal() {
         });
       } catch (err) {
         // If environment camera fails, try any camera
+        console.log("Error accessing camera:", err);
         console.log("Falling back to any available camera");
         mediaStream = await navigator.mediaDevices.getUserMedia({
           video: true,
