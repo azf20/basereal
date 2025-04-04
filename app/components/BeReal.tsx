@@ -28,6 +28,7 @@ export default function BaseReal() {
   const [title, setTitle] = useState("");
   const [textColor, setTextColor] = useState("#FFFFFF");
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
   const { address, status, chainId } = useAccount();
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
@@ -40,6 +41,7 @@ export default function BaseReal() {
 
   const startCamera = useCallback(async () => {
     try {
+      setCameraError(null);
       const mediaStream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: "environment",
@@ -55,16 +57,17 @@ export default function BaseReal() {
       setStream(mediaStream);
     } catch (error) {
       console.error("Error accessing camera:", error);
-      // Optionally show error to user
       if (error instanceof Error) {
         if (error.name === "NotAllowedError") {
-          alert(
+          setCameraError(
             "Camera access was denied. Please allow camera access to use this feature.",
           );
         } else if (error.name === "NotFoundError") {
-          alert("No camera found. Please ensure you have a camera connected.");
+          setCameraError(
+            "No camera found. Please ensure you have a camera connected.",
+          );
         } else {
-          alert("Error accessing camera: " + error.message);
+          setCameraError(`Error accessing camera: ${error.message}`);
         }
       }
     }
@@ -251,12 +254,29 @@ export default function BaseReal() {
             className="absolute inset-0 w-full h-full object-cover"
           />
           {!stream ? (
-            <button
-              onClick={startCamera}
-              className="absolute inset-0 flex items-center justify-center bg-black/50 text-white font-pixel"
-            >
-              Start Camera
-            </button>
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-white font-pixel">
+              {cameraError ? (
+                <div className="text-center p-4 text-red-500 max-w-sm">
+                  <p>{cameraError}</p>
+                  <button
+                    onClick={() => {
+                      setCameraError(null);
+                      startCamera();
+                    }}
+                    className="mt-4 px-4 py-2 bg-white/10 rounded hover:bg-white/20"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={startCamera}
+                  className="px-4 py-2 hover:bg-white/10 rounded"
+                >
+                  Start Camera
+                </button>
+              )}
+            </div>
           ) : (
             <button
               onClick={capturePhoto}
