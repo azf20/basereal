@@ -42,14 +42,26 @@ export default function BaseReal() {
   const startCamera = useCallback(async () => {
     try {
       setCameraError(null);
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: "environment",
-          width: { ideal: 1920 },
-          height: { ideal: 1920 },
-        },
-        audio: false,
-      });
+      let mediaStream;
+
+      try {
+        // First try environment camera
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { exact: "environment" },
+            width: { ideal: 1920 },
+            height: { ideal: 1920 },
+          },
+          audio: false,
+        });
+      } catch (err) {
+        // If environment camera fails, try any camera
+        console.log("Falling back to any available camera");
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+      }
 
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;

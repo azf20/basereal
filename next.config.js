@@ -7,11 +7,15 @@ const nextConfig = {
         headers: [
           {
             key: "Permissions-Policy",
-            value: "camera=*",
+            value: "camera=(self), microphone=()",
+          },
+          {
+            key: "Feature-Policy",
+            value: "camera *; microphone 'none'",
           },
           {
             key: "Cross-Origin-Resource-Policy",
-            value: "cross-origin",
+            value: "same-site",
           },
           {
             key: "Access-Control-Allow-Origin",
